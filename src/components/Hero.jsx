@@ -1,65 +1,49 @@
-import React from 'react';
-import { motion } from 'framer-motion';
-import { FaGithub, FaLinkedin } from 'react-icons/fa';
+import { GithubIcon, LinkedinIcon } from '../icons.jsx';
 
 const Hero = () => {
   return (
-    <div
-      id="home"
-      className="hero min-h-screen bg-base-200"
-      style={{
-        backgroundAttachment: 'fixed',
-        backgroundSize: 'cover',
-        backgroundPosition: 'center',
-        backgroundImage: 'url(./background.png)',
-      }}
-    >
-      <div className="hero-overlay bg-opacity-90 bg-black/80"></div>
-      <div className="hero-content text-center text-neutral-content">
-        <div className="max-w-md">
-          <motion.h1
-            initial={{ opacity: 0, y: 50 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5 }}
-            className="mb-5 text-5xl font-bold"
-          >
-            Brunfjell
-          </motion.h1>
-          <motion.p
-            initial={{ opacity: 0, y: 50 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5, delay: 0.2 }}
-            className="mb-5"
-          >
-            Building modern web experiences
-          </motion.p>
-          <motion.div
-            initial={{ opacity: 0, y: 50 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5, delay: 0.4 }}
-            className="flex justify-center space-x-4 mb-5"
-          >
-            <a href="#projects" className="btn btn-primary">
-              View Projects
-            </a>
-            <a href="#contact" className="btn btn-outline">
-              Contact Me
-            </a>
-          </motion.div>
-          <motion.div
-            initial={{ opacity: 0, y: 50 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5, delay: 0.6 }}
-            className="flex justify-center space-x-4"
-          >
-            <a href="https://github.com/Brunfjell-Halfbor" target="_blank" rel="noopener noreferrer">
-              <FaGithub className="w-6 h-6" />
-            </a>
-            <a href="https://linkedin.com/in/luis-troy-paraiso" target="_blank" rel="noopener noreferrer">
-              <FaLinkedin className="w-6 h-6 text-secondary" />
-            </a>
-          </motion.div>
-        </div>
+    <div className="wrap hero">
+      <div className="hero-flag">
+        Open for
+        <br />
+        freelance
+      </div>
+      <div className="folio">Issue No. 01 — Portfolio</div>
+      <div className="hero-title-wrap">
+        <div className="behind"></div>
+        <h1 className="title">
+          Luis Troy
+          <br />
+          Paraiso
+        </h1>
+      </div>
+      <p className="role">Software Developer — Philippines</p>
+      <p className="lede-lg">
+        I build web apps, on-device AI companions, and the automations that connect them — from React interfaces to
+        local LLM agents and n8n workflows.
+      </p>
+
+      <div className="cta-row">
+        <a className="btn solid" href="#prints">
+          View Prints
+        </a>
+        <a className="btn" href="#order">
+          Get in Touch
+        </a>
+      </div>
+
+      <div className="social-row">
+        <a href="https://github.com/Brunfjell-Halfbor" target="_blank" rel="noopener noreferrer" aria-label="GitHub">
+          <GithubIcon width={18} height={18} />
+        </a>
+        <a
+          href="https://linkedin.com/in/luis-troy-paraiso"
+          target="_blank"
+          rel="noopener noreferrer"
+          aria-label="LinkedIn"
+        >
+          <LinkedinIcon width={18} height={18} />
+        </a>
       </div>
     </div>
   );

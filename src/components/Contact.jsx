@@ -1,104 +1,104 @@
-import React, { useState } from 'react';
-import { motion } from 'framer-motion';
+import { useState } from 'react';
 import emailjs from '@emailjs/browser';
+
+const SERVICE_ID = import.meta.env.VITE_EMAILJS_SERVICE_ID;
+const TEMPLATE_ID = import.meta.env.VITE_EMAILJS_TEMPLATE_ID;
+const PUBLIC_KEY = import.meta.env.VITE_EMAILJS_PUBLIC_KEY;
 
 const Contact = () => {
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [message, setMessage] = useState('');
+  const [status, setStatus] = useState('idle'); 
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
-    const serviceID = 'service_0qicupp';
-    const templateID = 'template_d7k510r';
-    const publicKey = '6Vz92kGIbsC6U_eRs';
+    if (!SERVICE_ID || !TEMPLATE_ID || !PUBLIC_KEY) {
+      console.error(
+        'EmailJS is not configured. Copy .env.example to .env and set VITE_EMAILJS_SERVICE_ID, VITE_EMAILJS_TEMPLATE_ID and VITE_EMAILJS_PUBLIC_KEY.'
+      );
+      setStatus('error');
+      return;
+    }
 
-    const templateParams = { name, email, message };
-
-    emailjs.send(serviceID, templateID, templateParams, publicKey)
-      .then(() => {
-        alert('Message sent successfully!');
-        setName('');
-        setEmail('');
-        setMessage('');
-      })
-      .catch((err) => {
-        console.error('Failed to send message:', err);
-        alert('Failed to send message. Please try again later.');
-      });
+    setStatus('sending');
+    try {
+      await emailjs.send(SERVICE_ID, TEMPLATE_ID, { name, email, message }, PUBLIC_KEY);
+      setStatus('success');
+      setName('');
+      setEmail('');
+      setMessage('');
+    } catch (err) {
+      console.error('Failed to send message:', err);
+      setStatus('error');
+    }
   };
 
   return (
-    <div id="contact" className="py-20 bg-base-100">
-      <div className="container mx-auto px-4">
-        <motion.div
-          className="overflow-hidden"
-          initial={{ opacity: 0, y: 50 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, amount: 0.5 }}
-          transition={{ duration: 0.5 }}
-        >
-          <div className="flex flex-col md:flex-row">
-            <div className="md:w-1/2 p-8 text-white flex flex-col justify-center">
-              <h2 className="text-4xl font-bold mb-4">Let's build something great.</h2>
-              <p className="text-lg">
-                I'm currently available for freelance work and open to discussing new projects. 
-                Feel free to reach out via the form.
-              </p>
-            </div>
+    <section id="order">
+      <div className="wrap">
+        <div className="folio">Page 06 — Order Form</div>
+        <h2>Let's Build Something</h2>
+        <p className="lede">Open for freelance work — fill this in and it'll reach me directly.</p>
 
-            <div className="md:w-1/2 p-8">
-              <form onSubmit={handleSubmit} className="space-y-6">
-                <div className="form-control">
-                  <label className="label">
-                    <span className="label-text font-semibold">Name</span>
-                  </label>
-                  <input
-                    type="text"
-                    placeholder="Your Name"
-                    className="input input-bordered w-full"
-                    value={name}
-                    onChange={(e) => setName(e.target.value)}
-                    required
-                  />
-                </div>
-                <div className="form-control">
-                  <label className="label">
-                    <span className="label-text font-semibold">Email</span>
-                  </label>
-                  <input
-                    type="email"
-                    placeholder="Your Email"
-                    className="input input-bordered w-full"
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
-                    required
-                  />
-                </div>
-                <div className="form-control">
-                  <label className="label">
-                    <span className="label-text font-semibold">Message</span>
-                  </label>
-                  <textarea
-                    className="textarea textarea-bordered w-full h-32"
-                    placeholder="Your Message"
-                    value={message}
-                    onChange={(e) => setMessage(e.target.value)}
-                    required
-                  ></textarea>
-                </div>
-                <div className="form-control">
-                  <button type="submit" className="btn btn-primary w-full">
-                    Send Message
-                  </button>
-                </div>
-              </form>
-            </div>
+        <form className="order-form" onSubmit={handleSubmit}>
+          <div className="order-head">
+            <span>Order Form</span>
+            <span>No. 001</span>
           </div>
-        </motion.div>
+
+          {status === 'success' ? (
+            <div className="alert-box success">
+              <span className="code">Order Received</span>
+              Thanks — brunfjell will reply shortly.
+            </div>
+          ) : (
+            <div className="order-body">
+              <div className="field">
+                <label htmlFor="cName">Name</label>
+                <input
+                  id="cName"
+                  type="text"
+                  placeholder="Your name"
+                  value={name}
+                  onChange={(e) => setName(e.target.value)}
+                  required
+                />
+              </div>
+              <div className="field">
+                <label htmlFor="cEmail">Email</label>
+                <input
+                  id="cEmail"
+                  type="email"
+                  placeholder="you@example.com"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  required
+                />
+              </div>
+              <div className="field">
+                <label htmlFor="cMsg">Message</label>
+                <textarea
+                  id="cMsg"
+                  placeholder="What are you looking to build?"
+                  value={message}
+                  onChange={(e) => setMessage(e.target.value)}
+                  required
+                />
+              </div>
+              {status === 'error' && (
+                <div className="alert-box error">Something went wrong sending that — please try again shortly.</div>
+              )}
+              <button className="btn solid" type="submit" disabled={status === 'sending'} style={{ justifySelf: 'start' }}>
+                {status === 'sending' ? 'Sending…' : 'Submit Order'}
+              </button>
+              <div className="order-foot">Message goes straight to my inbox via EmailJS.</div>
+            </div>
+          )}
+        </form>
       </div>
-    </div>
+    </section>
   );
 };
 
