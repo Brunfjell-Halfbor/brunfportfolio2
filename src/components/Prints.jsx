@@ -5,7 +5,10 @@ const prints = [
       'An offline-first AI companion for Android — three small on-device models (text, vision, voice) instead of one large one, so it stays fast and cool with no cloud required.',
     tags: ['Flutter', 'llama.cpp', 'On-device LLM'],
     status: 'wip',
-    links: [{ label: 'Repository', href: 'https://github.com/Brunfjell-Halfbor/brunapp' }],
+    links: [
+      { label: 'Live Demo', href: 'https://brunfjell-halfbor.github.io/brunapp-web/', solid: true },
+      { label: 'Repository', href: 'https://github.com/Brunfjell-Halfbor/brunapp' },
+    ],
   },
   {
     title: 'RetriVault',
